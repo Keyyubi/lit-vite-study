@@ -9,9 +9,9 @@ export const routes = [
     path: "/",
     component: "employee-list-page",
     name: "employee-list",
-    label: "Employees",
+    label: "Employee List",
     action: () => {
-      dispatchEvent(new CustomEvent(ROUTE_CHANED_EVENT, { detail: { page: "employee-list" } }));
+      dispatchEvent(new CustomEvent(ROUTE_CHANED_EVENT, { detail: { page: "employee-list", label: "Employee List" } }));
     },
   },
   {
@@ -20,7 +20,7 @@ export const routes = [
     name: "add-employee",
     label: "Add Employee",
     action: () => {
-      dispatchEvent(new CustomEvent(ROUTE_CHANED_EVENT, { detail: { page: "add-employee" } }));
+      dispatchEvent(new CustomEvent(ROUTE_CHANED_EVENT, { detail: { page: "add-employee", label: "Add Employee" } }));
     },
   },
   {
@@ -30,7 +30,7 @@ export const routes = [
     hidden: true,
     label: "Edit Employee",
     action: () => {
-      dispatchEvent(new CustomEvent(ROUTE_CHANED_EVENT, { detail: { page: "edit-employee" } }));
+      dispatchEvent(new CustomEvent(ROUTE_CHANED_EVENT, { detail: { page: "edit-employee", label: "Edit Employee" } }));
     },
   },
 
@@ -40,7 +40,9 @@ export const routes = [
     name: "not-found",
     hidden: true,
     action: () => {
-      dispatchEvent(new CustomEvent(ROUTE_CHANED_EVENT, { detail: { page: "not-found" } }));
+      dispatchEvent(
+        new CustomEvent(ROUTE_CHANED_EVENT, { detail: { page: "not-found", label: "404 - Page not nound" } })
+      );
     },
   },
 ];

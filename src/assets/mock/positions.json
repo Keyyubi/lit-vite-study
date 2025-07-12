@@ -1,0 +1,16 @@
+{
+  "positions": [
+    {
+      "code": "JR",
+      "name": "Junior"
+    },
+    {
+      "code": "MD",
+      "name": "Midior"
+    },
+    {
+      "code": "SR",
+      "name": "Senior"
+    }
+  ]
+}

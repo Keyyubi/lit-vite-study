@@ -1,6 +1,7 @@
 import { css, html, LitElement } from "lit";
 import { routes } from "../router/routes";
 import ingLogo from "../assets/logo.png";
+import { store } from "../store";
 
 /**
  * This is a header navigation bar component that displays a logo and a list of routes.
@@ -30,8 +31,8 @@ class HeaderNavbar extends LitElement {
         color: var(--color-primary-light);
       }
 
-      header nav ul a .active {
-        color: var(--primary-color);
+      header nav ul a.active {
+        color: var(--color-primary);
       }
 
       header .logo-container {
@@ -61,7 +62,11 @@ class HeaderNavbar extends LitElement {
 
   constructor() {
     super();
-    this.currentPage = "home";
+    this.currentPage = routes[0].name;
+
+    store.subscribe(() => {
+      this.currentPage = store.getState().common.currentPage;
+    });
   }
 
   render() {
@@ -71,7 +76,7 @@ class HeaderNavbar extends LitElement {
         (route) => html`
           <li>
             <span></span>
-            <a href="${route.path}">${route.label}</a>
+            <a href="${route.path}" class="${this.currentPage === route.name ? "active" : ""}">${route.label}</a>
           </li>
         `
       );
@@ -93,13 +98,3 @@ class HeaderNavbar extends LitElement {
 }
 
 customElements.define("header-navbar", HeaderNavbar);
-
-// @click="${(e) => {
-// 	e.preventDefault();
-// 	window.history.pushState({}, "", route.path);
-// 	dispatchEvent(
-// 		new CustomEvent("route-changed", {
-// 			detail: { location: route.path },
-// 		})
-// 	);
-// }}">

@@ -1,0 +1,15 @@
+{
+  "employees": [
+    {
+      "id": 1,
+      "firstname": "John",
+      "surname": "Doe",
+      "position": "JR",
+      "department": "IT",
+      "email": "johndoe@test.com",
+      "phone": "+1234567890",
+      "dateOfEmployment": "2023-01-15",
+      "dateOfBirth": "1990-05-20"
+    }
+  ]
+}
