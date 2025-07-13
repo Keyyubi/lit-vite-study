@@ -1,9 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { employees, orderedTableColumns } from "../../assets/mock/employees.json";
+import { employees as mockEmployees, orderedTableColumns } from "../../assets/mock/employees.json";
 
 const initialState = {
-  employees: [...employees],
+  employees: [...mockEmployees],
   tableColumns: [...orderedTableColumns],
+  defaultEmployee: {
+    ...Object.entries(mockEmployees[0]).reduce((acc, [key]) => {
+      acc[key] = "";
+      return acc;
+    }, {}),
+  },
 };
 
 export const employeeSlice = createSlice({

@@ -53,6 +53,7 @@ export class ButtonElement extends LitElement {
     return {
       disabled: { type: Boolean },
       outlined: { type: Boolean },
+      secondary: { type: Boolean },
       fullWidth: { type: Boolean },
     };
   }
@@ -61,6 +62,7 @@ export class ButtonElement extends LitElement {
     super();
     this.disabled = false;
     this.outlined = false;
+    this.secondary = false;
     this.fullWidth = false;
   }
 
@@ -74,8 +76,8 @@ export class ButtonElement extends LitElement {
   render() {
     const classes = {
       outlined: this.outlined,
-      secondary: this.classList.contains("secondary"),
-      fullWidth: this.classList.contains("fullWidth"),
+      secondary: this.secondary,
+      fullWidth: this.fullWidth,
     };
 
     return html`

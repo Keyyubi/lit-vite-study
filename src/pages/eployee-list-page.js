@@ -41,7 +41,7 @@ class EmployeeListPage extends LitElement {
 
   render() {
     return html`
-      <div class="container">
+      <section class="container">
         <div class="row header-container">
           <h2>${this.currentPageTitle}</h2>
           <div class="tabs-container">
@@ -50,7 +50,9 @@ class EmployeeListPage extends LitElement {
           </div>
         </div>
 
-        <table-element .data="${this.employees}" .columns="${this.columns}"></table-element>
+        <div class="row card">
+          <table-element .data="${this.employees}" .columns="${this.columns}"></table-element>
+        </div>
 
         <div class="row">
           <div class="col">
@@ -63,7 +65,7 @@ class EmployeeListPage extends LitElement {
             <p>Employee 3</p>
           </div>
         </div>
-      </div>
+      </section>
     `;
   }
 }
