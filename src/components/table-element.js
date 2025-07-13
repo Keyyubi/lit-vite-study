@@ -5,9 +5,14 @@ class TableElement extends LitElement {
   static styles = css`
     .tableContainer {
       width: 100%;
+      overflow-x: hidden;
+    }
+
+    .tableWrapper {
+      min-width: 100%;
+      width: auto;
+      height: auto;
       overflow-x: auto;
-      margin: 1rem 0;
-      background-color: var(--color-white);
     }
 
     table {
@@ -18,8 +23,10 @@ class TableElement extends LitElement {
 
     th,
     td {
+      white-space: nowrap;
       padding: 1rem;
       border-bottom: 1px solid var(--color-border);
+      text-align: center;
     }
 
     th {
@@ -81,34 +88,36 @@ class TableElement extends LitElement {
   render() {
     return html`
       <div class="tableContainer">
-        <table>
-          <thead>
-            <tr>
-              <th>
-                <checkbox-element
-                  .checked=${this.selectedEmployees.length === this.data.length}
-                  @checkbox-change=${this.onToggleSelectAll}
-                ></checkbox-element>
-              </th>
-              ${this.columns.map((col) => html`<th>${col.label}</th>`)}
-            </tr>
-          </thead>
-          <tbody>
-            ${this.data.map(
-              (item) => html`
-                <tr>
-                  <td>
-                    <checkbox-element
-                      .checked=${this.selectedEmployees.includes(item.id)}
-                      @checkbox-change=${() => this.selectEmployee(item.id)}
-                    ></checkbox-element>
-                  </td>
-                  ${this.columns.map((col) => html`<td>${item[col.key]}</td>`)}
-                </tr>
-              `
-            )}
-          </tbody>
-        </table>
+        <div class="tableWrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>
+                  <checkbox-element
+                    .checked=${this.selectedEmployees.length === this.data.length}
+                    @checkbox-change=${this.onToggleSelectAll}
+                  ></checkbox-element>
+                </th>
+                ${this.columns.map((col) => html`<th>${col.label}</th>`)}
+              </tr>
+            </thead>
+            <tbody>
+              ${this.data.map(
+                (item) => html`
+                  <tr>
+                    <td>
+                      <checkbox-element
+                        .checked=${this.selectedEmployees.includes(item.id)}
+                        @checkbox-change=${() => this.selectEmployee(item.id)}
+                      ></checkbox-element>
+                    </td>
+                    ${this.columns.map((col) => html`<td>${item[col.key]}</td>`)}
+                  </tr>
+                `
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     `;
   }

@@ -50,20 +50,10 @@ class EmployeeListPage extends LitElement {
           </div>
         </div>
 
-        <div class="row card">
+        <div class="card">
           <table-element .data="${this.employees}" .columns="${this.columns}"></table-element>
-        </div>
 
-        <div class="row">
-          <div class="col">
-            <p>Employee 1</p>
-          </div>
-          <div class="col">
-            <p>Employee 2</p>
-          </div>
-          <div class="col">
-            <p>Employee 3</p>
-          </div>
+          <div class="row">Pagination will be added here</div>
         </div>
       </section>
     `;
