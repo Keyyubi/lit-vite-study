@@ -11,5 +11,43 @@
       "dateOfEmployment": "2023-01-15",
       "dateOfBirth": "1990-05-20"
     }
+  ],
+  "orderedTableColumns": [
+    {
+      "key": "firstname",
+      "label": "Firstname"
+    },
+    {
+      "key": "surname",
+      "label": "Surname"
+    },
+    {
+      "key": "dateOfEmployment",
+      "label": "Date of Employment"
+    },
+    {
+      "key": "dateOfBirth",
+      "label": "Date of Birth"
+    },
+    {
+      "key": "email",
+      "label": "Email"
+    },
+    {
+      "key": "phone",
+      "label": "Phone"
+    },
+    {
+      "key": "department",
+      "label": "Department"
+    },
+    {
+      "key": "position",
+      "label": "Position"
+    },
+    {
+      "key": "actions",
+      "label": "Actions"
+    }
   ]
 }

@@ -9,14 +9,12 @@ import "./components/header-navbar";
  * @csspart button - The button
  */
 export class MyElement extends LitElement {
-  static get styles() {
-    return css`
-      main {
-        display: flex;
-        justify-content: center;
-      }
-    `;
-  }
+  static styles = css`
+    main {
+      display: flex;
+      justify-content: center;
+    }
+  `;
 
   firstUpdated() {
     const outlet = this.shadowRoot.querySelector("main");

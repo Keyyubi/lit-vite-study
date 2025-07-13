@@ -2,6 +2,7 @@ import { css, html, LitElement } from "lit";
 import { store } from "../store";
 
 import { sharedStyles } from "../components/shared-styles";
+import "../components/table-element";
 
 class EmployeeListPage extends LitElement {
   static styles = [
@@ -19,10 +20,23 @@ class EmployeeListPage extends LitElement {
     `,
   ];
 
+  static get properties() {
+    return {
+      currentPage: { type: String },
+      currentPageTitle: { type: String },
+      employees: { type: Array },
+      columns: { type: Array },
+    };
+  }
+
   constructor() {
     super();
-    this.currentPage = store.getState().common.currentPage;
-    this.currentPageTitle = store.getState().common.currentPageTitle;
+    const storeState = store.getState();
+
+    this.currentPage = storeState.common.currentPage;
+    this.currentPageTitle = storeState.common.currentPageTitle;
+    this.employees = storeState.employee.employees;
+    this.columns = storeState.employee.tableColumns;
   }
 
   render() {
@@ -36,7 +50,8 @@ class EmployeeListPage extends LitElement {
           </div>
         </div>
 
-        <div class="row">Employees list will be displayed here.</div>
+        <table-element .data="${this.employees}" .columns="${this.columns}"></table-element>
+
         <div class="row">
           <div class="col">
             <p>Employee 1</p>

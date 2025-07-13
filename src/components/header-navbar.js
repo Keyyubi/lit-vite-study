@@ -7,49 +7,47 @@ import { store } from "../store";
  * This is a header navigation bar component that displays a logo and a list of routes.
  */
 class HeaderNavbar extends LitElement {
-  static get styles() {
-    return css`
-      header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 1rem;
-        background-color: var(--color-white);
-        color: var(--color-primary-light);
-      }
+  static styles = css`
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem;
+      background-color: var(--color-white);
+      color: var(--color-primary-light);
+    }
 
-      header nav ul {
-        list-style: none;
-        display: flex;
-        gap: 1rem;
-        margin: 0;
-        padding: 0;
-      }
+    header nav ul {
+      list-style: none;
+      display: flex;
+      gap: 1rem;
+      margin: 0;
+      padding: 0;
+    }
 
-      header nav ul a {
-        text-decoration: none;
-        color: var(--color-primary-light);
-      }
+    header nav ul a {
+      text-decoration: none;
+      color: var(--color-primary-light);
+    }
 
-      header nav ul a.active {
-        color: var(--color-primary);
-      }
+    header nav ul a.active {
+      color: var(--color-primary);
+    }
 
-      header .logo-container {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        font-size: 1rem;
-        font-weight: bold;
-        color: var(--color-font);
-      }
+    header .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1rem;
+      font-weight: bold;
+      color: var(--color-font);
+    }
 
-      header .logo-container .logo {
-        width: 2rem;
-        border-radius: 0.5rem;
-      }
-    `;
-  }
+    header .logo-container .logo {
+      width: 2rem;
+      border-radius: 0.5rem;
+    }
+  `;
 
   static get properties() {
     return {

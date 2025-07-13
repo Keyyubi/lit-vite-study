@@ -7,6 +7,7 @@ export const sharedStyles = css`
   }
 
   .container {
+    max-width: 1280px;
     width: 92vw;
     height: auto;
     margin: 0 auto;
@@ -14,7 +15,6 @@ export const sharedStyles = css`
   }
 
   .container .row {
-    width: 100%;
     display: flex;
     flex-wrap: wrap;
   }
@@ -29,6 +29,10 @@ export const sharedStyles = css`
     .container .row .col {
       flex: 0 0 100%;
       padding: 0.5rem 0;
+    }
+
+    .hide-on-mobile {
+      display: none !important;
     }
   }
 `;

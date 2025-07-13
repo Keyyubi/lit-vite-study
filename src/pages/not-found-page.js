@@ -3,24 +3,22 @@ import "../components/button-element";
 import { Router } from "@vaadin/router";
 
 class NotFoundPage extends LitElement {
-  static get styles() {
-    return css`
-      :host {
-        display: block;
-        text-align: center;
-        padding: 1rem;
-      }
+  static styles = css`
+    :host {
+      display: block;
+      text-align: center;
+      padding: 1rem;
+    }
 
-      h1 {
-        color: var(--color-primary);
-        margin: 1rem;
-      }
+    h1 {
+      color: var(--color-primary);
+      margin: 1rem;
+    }
 
-      button {
-        margin-block-start: 1rem;
-      }
-    `;
-  }
+    button {
+      margin-block-start: 1rem;
+    }
+  `;
 
   render() {
     return html`
