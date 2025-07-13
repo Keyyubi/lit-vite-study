@@ -15,16 +15,16 @@ export const sharedStyles = css`
     padding: 0.5rem;
   }
 
-  .container .row {
+  .row {
     display: flex;
     flex-wrap: wrap;
   }
 
-  .container .row:has(.col) {
+  .row:has(.col) {
     gap: 5%;
   }
 
-  .container .row .col {
+  .row .col {
     padding-inline: 0.5rem;
     flex: 0 0 30%;
     padding: 0.5rem;
@@ -38,7 +38,7 @@ export const sharedStyles = css`
   }
 
   @media (max-width: 768px) {
-    .container .row .col {
+    .row .col {
       flex: 0 0 100%;
       padding: 0.5rem 0;
     }
