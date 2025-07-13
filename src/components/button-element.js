@@ -1,4 +1,5 @@
 import { css, html, LitElement } from "lit";
+import { classMap } from "lit/directives/class-map.js";
 
 export class ButtonElement extends LitElement {
   static styles = css`
@@ -16,6 +17,27 @@ export class ButtonElement extends LitElement {
       cursor: pointer;
     }
 
+    button.outlined {
+      background-color: transparent;
+      border: 1px solid var(--color-primary);
+      color: var(--color-primary);
+    }
+
+    button.secondary {
+      background-color: var(--color-secondary);
+      color: var(--color-white);
+    }
+
+    button.secondary.outlined {
+      background-color: transparent;
+      border: 1px solid var(--color-secondary);
+      color: var(--color-secondary);
+    }
+
+    button.fullWidth {
+      width: 100%;
+    }
+
     button:hover {
       transform: scale(1.01);
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -30,12 +52,16 @@ export class ButtonElement extends LitElement {
   static get properties() {
     return {
       disabled: { type: Boolean },
+      outlined: { type: Boolean },
+      fullWidth: { type: Boolean },
     };
   }
 
   constructor() {
     super();
     this.disabled = false;
+    this.outlined = false;
+    this.fullWidth = false;
   }
 
   handleClick(event) {
@@ -46,8 +72,14 @@ export class ButtonElement extends LitElement {
   }
 
   render() {
+    const classes = {
+      outlined: this.outlined,
+      secondary: this.classList.contains("secondary"),
+      fullWidth: this.classList.contains("fullWidth"),
+    };
+
     return html`
-      <button @click=${this.handleClick} ?disabled="${this.disabled}">
+      <button class=${classMap(classes)} @click=${this.handleClick} ?disabled="${this.disabled}">
         <slot></slot>
       </button>
     `;
