@@ -1,8 +1,9 @@
+import { ROUTE_CHANED_EVENT } from "./router";
 import "../pages/employee-list-page";
 import "../pages/add-employee-page";
 import "../pages/edit-employee-page";
 import "../pages/not-found-page";
-import { ROUTE_CHANED_EVENT } from "./router";
+import "../pages/admin-page";
 
 export const routes = [
   {
@@ -33,7 +34,16 @@ export const routes = [
       dispatchEvent(new CustomEvent(ROUTE_CHANED_EVENT, { detail: { page: "edit-employee", label: "Edit Employee" } }));
     },
   },
-
+  {
+    path: "/admin-page",
+    component: "admin-page",
+    name: "admin-page",
+    hidden: true,
+    label: "Admin page",
+    action: () => {
+      dispatchEvent(new CustomEvent(ROUTE_CHANED_EVENT, { detail: { page: "admin-page", label: "Admin page" } }));
+    },
+  },
   {
     path: "(.*)",
     component: "not-found-page",

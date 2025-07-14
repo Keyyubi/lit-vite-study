@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { employees as mockEmployees, orderedTableColumns } from "../../assets/mock/employees.json";
+import { LOCAL_STORAGE_KEY } from "../localStorageUtils";
 
 const initialState = {
   employees: [...mockEmployees],
@@ -27,8 +28,15 @@ export const employeeSlice = createSlice({
         emp.id === action.payload.id ? { ...emp, ...action.payload } : emp
       );
     },
+    bulkImportEmployees: (state, action) => {
+      state.employees = [...state.employees, ...action.payload];
+    },
+    clearEmployees: (state) => {
+      state.employees = [];
+    },
   },
 });
 
-export const { addEmployee, removeEmployee, updateEmployee } = employeeSlice.actions;
+export const { addEmployee, removeEmployee, updateEmployee, bulkImportEmployees, clearEmployees } =
+  employeeSlice.actions;
 export default employeeSlice.reducer;
