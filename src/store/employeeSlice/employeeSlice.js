@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { employees as mockEmployees, orderedTableColumns } from "../../assets/mock/employees.json";
-import { LOCAL_STORAGE_KEY } from "../localStorageUtils";
 
 const initialState = {
   employees: [...mockEmployees],
@@ -21,7 +20,14 @@ export const employeeSlice = createSlice({
       state.employees.push(action.payload);
     },
     removeEmployee: (state, action) => {
+      console.log("Removing employee with ID:", action.payload.id);
+      console.log("Before:", state.employees);
+
       state.employees = state.employees.filter((emp) => emp.id !== action.payload.id);
+
+      console.log("After:", state.employees);
+
+      // state.employees = state.employees.filter((emp) => emp.id !== action.payload.id);
     },
     updateEmployee: (state, action) => {
       state.employees = state.employees.map((emp) =>

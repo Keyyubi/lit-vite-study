@@ -51,7 +51,7 @@ export const createMockEmployees = () => {
     const randomNumber = Array.from({ length: 9 }, () => Math.floor(Math.random() * 10)).join("");
 
     return {
-      id: i,
+      id: i + 1,
       firstname: names[nameIndex],
       surname: surnames[surnameIndex],
       position: positions[positionIndex],

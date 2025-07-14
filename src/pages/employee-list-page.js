@@ -1,10 +1,11 @@
-import { css, html, LitElement } from "lit";
+import { css, html, LitElement, nothing } from "lit";
 import { store } from "../store";
 
 import { sharedStyles } from "../components/shared-styles";
 import "../components/table-element";
 import "../components/employee-card";
 import { Router } from "@vaadin/router";
+import { removeEmployee } from "../store/employeeSlice/employeeSlice";
 
 class EmployeeListPage extends LitElement {
   static styles = [
@@ -44,12 +45,28 @@ class EmployeeListPage extends LitElement {
        * This represents the columns will be displayed on the table view
        */
       columns: { type: Array },
-
       /**
        * This represents the view mode of the data.
        * It can be "table" or "card"
        */
       mode: { type: String },
+      /**
+       * This represents how many items will be shown on per page
+       * Can be changed via `/admin-page` route
+       */
+      itemsCount: { type: Number },
+      /**
+       * This is used to hold the id of the target employee that will go in to action
+       */
+      targetEmployeeId: { type: String },
+      /**
+       * This is used to toggle delete confirmation modal
+       */
+      isDeleteModalOpen: { type: Boolean },
+      /**
+       * This is used to show operation result to the user
+       */
+      resultMessage: { type: String },
     };
   }
 
@@ -62,23 +79,66 @@ class EmployeeListPage extends LitElement {
     this.employees = storeState.employee.employees;
     this.columns = storeState.employee.tableColumns;
     this.mode = "table";
+    this.itemsCount = storeState.common.itemsPerPage;
+    this.targetEmployeeId = "";
+    this.isDeleteModalOpen = false;
+    this.resultMessage = "";
   }
 
   handleEditClick(event) {
     Router.go(`/edit-employee/${event.detail.value}`);
   }
 
-  handleDeleteClick(event) {
-    console.log(event.detail.value);
+  openDeleteConfirmation(event) {
+    this.targetEmployeeId = event.detail.value;
+    this.isDeleteModalOpen = true;
+  }
+
+  closeDeleteConfirmation() {
+    this.targetEmployeeId = "";
+    this.isDeleteModalOpen = false;
+  }
+
+  performDelete() {
+    store.dispatch(removeEmployee({ id: this.targetEmployeeId }));
+    this.resultMessage = "Employee removed successfully!";
+    this.isDeleteModalOpen = false;
+    this.employees = store.getState().employee.employees;
+    this.requestUpdate();
   }
 
   render() {
+    const deleteConfirmation = this.isDeleteModalOpen
+      ? html`
+          <confirmation-modal
+            headerTitle="Are you sure?"
+            @dialog-close-button-click=${this.closeDeleteConfirmation}
+            @dialog-continue-button-click=${this.performDelete}
+          >
+            <p>Are you sure want to delete this employee? This operation cannot be undone!</p>
+          </confirmation-modal>
+        `
+      : nothing;
+
+    const resultModal = this.resultMessage
+      ? html`
+          <confirmation-modal
+            headerTitle="Operation Result"
+            mode="info"
+            @dialog-close-button-click=${() => (this.resultMessage = "")}
+            @dialog-continue-button-click=${() => (this.resultMessage = "")}
+          >
+            <p>${this.resultMessage}</p>
+          </confirmation-modal>
+        `
+      : nothing;
+
     const tableView = html`
       <div class="card">
         <table-element
           .data="${this.employees}"
           .columns="${this.columns}"
-          @table-delete-row-action=${this.handleDeleteClick}
+          @table-delete-row-action=${this.openDeleteConfirmation}
           @table-edit-row-action=${this.handleEditClick}
         ></table-element>
       </div>
@@ -90,7 +150,7 @@ class EmployeeListPage extends LitElement {
           html`<employee-card
             class="employee-card"
             .employee=${item}
-            @employee-card-delete-click=${this.handleDeleteClick}
+            @employee-card-delete-click=${this.openDeleteConfirmation}
             @employee-card-edit-click=${this.handleEditClick}
           ></employee-card>`
       )}
@@ -116,6 +176,7 @@ class EmployeeListPage extends LitElement {
         ${this.mode === "table" ? tableView : cardView}
         <div class="row">Pagination will be added here</div>
       </section>
+      ${deleteConfirmation} ${resultModal}
     `;
   }
 }

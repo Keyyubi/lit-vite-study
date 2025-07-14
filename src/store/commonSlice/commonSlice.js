@@ -4,6 +4,7 @@ const initialState = {
   currentPage: "home",
   isLoading: false,
   currentPageTitle: "Home",
+  itemsPerPage: 0,
 };
 
 export const commonSlice = createSlice({
@@ -19,8 +20,11 @@ export const commonSlice = createSlice({
     setCurrentPageTitle: (state, action) => {
       state.currentPageTitle = action.payload;
     },
+    setItemsPerPage: (state, action) => {
+      state.itemsPerPage = action.payload;
+    },
   },
 });
 
-export const { setCurrentPage, setLoading, setCurrentPageTitle } = commonSlice.actions;
+export const { setCurrentPage, setLoading, setCurrentPageTitle, setItemsPerPage } = commonSlice.actions;
 export default commonSlice.reducer;

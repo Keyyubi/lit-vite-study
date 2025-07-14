@@ -8,7 +8,7 @@ export const sharedStyles = css`
   }
 
   .container {
-    max-width: 1280px;
+    max-width: 1440px;
     width: 92vw;
     height: auto;
     margin: 0 auto;

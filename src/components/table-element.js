@@ -34,6 +34,10 @@ class TableElement extends LitElement {
       font-weight: normal;
     }
 
+    table tr.selected-row {
+      background-color: var(--color-primary-light);
+    }
+
     table tr:last-child td {
       border-bottom: none;
     }
@@ -131,7 +135,7 @@ class TableElement extends LitElement {
             <tbody>
               ${this.data.map(
                 (item) => html`
-                  <tr>
+                  <tr class=${this.selectedEmployees.includes(item.id) ? "selected-row" : ""}>
                     <td>
                       <checkbox-element
                         .checked=${this.selectedEmployees.includes(item.id)}
