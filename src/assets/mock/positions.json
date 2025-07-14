@@ -1,16 +1,3 @@
 {
-  "positions": [
-    {
-      "code": "JR",
-      "name": "Junior"
-    },
-    {
-      "code": "MD",
-      "name": "Medior"
-    },
-    {
-      "code": "SR",
-      "name": "Senior"
-    }
-  ]
+  "positions": ["Junior", "Medior", "Senior"]
 }

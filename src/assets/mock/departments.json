@@ -1,20 +1,3 @@
 {
-  "departments": [
-    {
-      "code": "AN",
-      "name": "Analytics"
-    },
-    {
-      "code": "IT",
-      "name": "Tech"
-    },
-    {
-      "code": "HR",
-      "name": "Human Resources"
-    },
-    {
-      "code": "PR",
-      "name": "Marketing"
-    }
-  ]
+  "departments": ["Analytics", "Tech", "Human Resources", "Marketing"]
 }

@@ -44,10 +44,6 @@
     {
       "key": "position",
       "label": "Position"
-    },
-    {
-      "key": "actions",
-      "label": "Actions"
     }
   ]
 }

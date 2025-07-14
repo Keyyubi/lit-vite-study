@@ -1,7 +1,7 @@
 import { html, css, LitElement, nothing } from "lit";
 import { Router } from "@vaadin/router";
 import { store } from "../store";
-import { addEmployee } from "../store/employeeSlice/employeeSlice";
+import { addEmployee, updateEmployee } from "../store/employeeSlice/employeeSlice";
 import { departments } from "../assets/mock/departments.json";
 import { positions } from "../assets/mock/positions.json";
 import { validateEmployeeInformation } from "../utils/helper";
@@ -31,30 +31,34 @@ class AddEditEmployee extends LitElement {
 
   static get properties() {
     return {
-      /* *
+      /**
        * This is used to identify if the operation is adding new or editing existing one
        */
       employeeId: { type: String },
-      /* * Default employee object structure
+      /** Default employee object structure
        * This is used to initialize the form for adding a new employee.
        */
       employee: { type: Object },
-      /* *
-       * This is used to hold input names those have validation errors
+      /**
+       * This is used to mark inputs those have validation errors
        */
       errorFields: { type: Array },
-      /* *
-       * This is used to set validation error messages
+      /**
+       * This is used to show validation error messages
        */
       errorMessages: { type: Array },
-      /* *
-       * This is used to show information messages to user
+      /**
+       * This is used to show information messages to user and also to toggle information modal
        */
       informationMessage: { type: String },
-      /* *
-       * This is used to toggle dialog
+      /**
+       * This is used to toggle confirmation dialog
        */
       isDialogOpen: { type: Boolean },
+      /**
+       * This is used to identify if the component is in edit mode or add mode
+       */
+      mode: { type: String },
     };
   }
 
@@ -62,17 +66,26 @@ class AddEditEmployee extends LitElement {
     super();
     const storeState = store.getState();
 
-    this.employeeId = this.getAttribute("employeeId");
-    const employeeTarget = this.employeeId
-      ? storeState.employee.employees.filter((employee) => this.employeeId == employee.id)[0]
-      : storeState.employee.defaultEmployee;
-
     // Avoiding unintenational mutaion
-    this.employee = { ...employeeTarget };
+    this.employee = { ...storeState.employee.defaultEmployee };
+
+    this.employeeId = "";
     this.errorMessages = [];
     this.errorFields = [];
     this.informationMessage = "";
     this.isDialogOpen = false;
+    this.mode = "add";
+  }
+
+  willUpdate(changedProps) {
+    if (changedProps.has("employeeId")) {
+      const storeState = store.getState();
+      const employeeTarget = storeState.employee.employees.filter((employee) => this.employeeId == employee.id)[0];
+
+      if (employeeTarget) {
+        this.employee = { ...employeeTarget };
+      }
+    }
   }
 
   handleCancelClick() {
@@ -92,13 +105,15 @@ class AddEditEmployee extends LitElement {
       return;
     }
 
-    const existingEmployees = store
-      .getState()
-      .employee.employees.filter((item) => item.email === this.employee.email || item.phone === this.employee.phone);
+    if (this.mode === "add") {
+      const existingEmployees = store
+        .getState()
+        .employee.employees.filter((item) => item.email === this.employee.email || item.phone === this.employee.phone);
 
-    if (existingEmployees.length > 0) {
-      this.informationMessage = [html`<p>There is another employee with these email and/or phone number.</p>`];
-      return;
+      if (existingEmployees.length > 0) {
+        this.informationMessage = [html`<p>There is another employee with these email and/or phone number.</p>`];
+        return;
+      }
     }
 
     this.isDialogOpen = true;
@@ -107,14 +122,15 @@ class AddEditEmployee extends LitElement {
   performSave() {
     this.isDialogOpen = false;
 
-    this.employee.id = store.getState().employee.employees.length + 1;
+    this.mode === "add" && (this.employee.id = store.getState().employee.employees.length + 1);
 
-    store.dispatch(addEmployee(this.employee));
+    if (this.mode === "add") store.dispatch(addEmployee(this.employee));
+    else store.dispatch(updateEmployee(this.employee));
 
     this.informationMessage = [html`<p>Employee added successfully! You are being redirected to homepage</p>`];
     setTimeout(() => {
       Router.go("/");
-    }, 3000);
+    }, 2000);
   }
 
   render() {
@@ -124,7 +140,7 @@ class AddEditEmployee extends LitElement {
           @dialog-close-button-click=${() => (this.isDialogOpen = false)}
           @dialog-continue-button-click=${this.performSave}
         >
-          <p>Are you sure want to add employee with these information?</p>
+          <p>${`Are you sure want to ${this.mode} employee with these information?`}</p>
         </confirmation-modal>`
       : nothing;
 
@@ -220,6 +236,7 @@ class AddEditEmployee extends LitElement {
               @dropdown-item-selected=${(e) => (this.employee.department = e.detail.value)}
               name="department"
               label="Department"
+              selected=${this.employee.department}
               ?hasError=${this.errorFields.includes("department")}
               .options=${departments}
             ></dropdown-element>
@@ -229,6 +246,7 @@ class AddEditEmployee extends LitElement {
               @dropdown-item-selected=${(e) => (this.employee.position = e.detail.value)}
               name="position"
               label="Position"
+              selected=${this.employee.position}
               ?hasError=${this.errorFields.includes("position")}
               .options=${positions}
             ></dropdown-element>

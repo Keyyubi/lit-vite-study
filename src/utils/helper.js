@@ -79,3 +79,15 @@ export const validateEmployeeInformation = (employee) => {
 
   return result;
 };
+
+/**
+ * This function used to get selected items label
+ * It gets 2 parameters: `options` array and selected item code as `itemCode`
+ * @param {Array} options
+ * @param {string} itemCode
+ * @returns {string}
+ */
+export const getSelectedItemByCode = (options, itemCode) => {
+  const item = options.find((item) => item.code === itemCode);
+  return item ? item.name : "";
+};

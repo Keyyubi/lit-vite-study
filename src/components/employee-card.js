@@ -1,6 +1,7 @@
 import { css, html, LitElement } from "lit";
 import { sharedStyles } from "./shared-styles";
 import "./button-element";
+import { Router } from "@vaadin/router";
 
 class EmployeeCard extends LitElement {
   static styles = [
@@ -57,6 +58,26 @@ class EmployeeCard extends LitElement {
     };
   }
 
+  handleDeleteClick() {
+    this.dispatchEvent(
+      new CustomEvent("employee-card-delete-click", {
+        detail: { value: this.employee.id },
+        bubbles: true,
+        composed: true,
+      })
+    );
+  }
+
+  handleEditClick() {
+    this.dispatchEvent(
+      new CustomEvent("employee-card-edit-click", {
+        detail: { value: this.employee.id },
+        bubbles: true,
+        composed: true,
+      })
+    );
+  }
+
   render() {
     return html`
       <div class="card">
@@ -105,13 +126,13 @@ class EmployeeCard extends LitElement {
         </div>
 
         <div class="propertyRow flex">
-          <button-element secondary>
+          <button-element secondary @on-button-click=${this.handleEditClick}>
             <div class="actionButton">
               <iconify-icon class="icon" icon="tabler:edit"></iconify-icon>
               <span>Edit</span>
             </div>
           </button-element>
-          <button-element>
+          <button-element @on-button-click=${this.handleDeleteClick}>
             <div class="actionButton">
               <iconify-icon class="icon" icon="majesticons:delete-bin"></iconify-icon>
               <span>Delete</span>

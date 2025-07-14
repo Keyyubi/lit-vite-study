@@ -71,13 +71,13 @@ class DropdownElement extends LitElement {
        */
       label: { type: String },
       /**
-       * options array should be array of { code: string, name: string } objects.
+       * options array should be array of string
        */
       options: { type: Array },
       /**
-       * selected property represents selected { code: string, name: string } object from the options array
+       * selected property represents selected item
        */
-      selected: { type: Object },
+      selected: { type: String },
       /**
        * Represents whether the dropdown items container opened
        */
@@ -101,14 +101,14 @@ class DropdownElement extends LitElement {
     this.selected = item;
     this.isOpen = false;
     this.dispatchEvent(
-      new CustomEvent("dropdown-item-selected", { detail: { value: item.name }, bubbles: true, composed: true })
+      new CustomEvent("dropdown-item-selected", { detail: { value: item }, bubbles: true, composed: true })
     );
   }
 
   render() {
     const items =
       this.options.length > 0
-        ? this.options.map((item) => html`<li @click=${() => this.selectItem(item)}>${item.name}</li>`)
+        ? this.options.map((item) => html`<li @click=${() => this.selectItem(item)}>${item}</li>`)
         : html`<li class="unselectable">No items</li>`;
     return html`
       <div class="dropdownContainer">
@@ -117,7 +117,7 @@ class DropdownElement extends LitElement {
           class=${"dropdownButton".concat(this.hasError ? " hasError" : "")}
           @click=${() => (this.isOpen = !this.isOpen)}
         >
-          <span class=${this.selected.name ? "" : "placeholder"}>${this.selected.name || this.placeholder}</span>
+          <span class=${this.selected ? "" : "placeholder"}>${this.selected || this.placeholder}</span>
         </div>
         <div class="dropdownItemsContainer" ?hidden=${!this.isOpen}>
           <ul>

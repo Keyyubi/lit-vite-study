@@ -37,6 +37,13 @@ class TableElement extends LitElement {
     table tr:last-child td {
       border-bottom: none;
     }
+
+    td .actionIcon {
+      cursor: pointer;
+      color: var(--color-primary);
+      margin-inline-end: 0.25rem;
+      font-size: 1.25rem;
+    }
   `;
 
   static get properties() {
@@ -85,6 +92,25 @@ class TableElement extends LitElement {
     }
   }
 
+  handleDeleteEmployeeClick(employeeId) {
+    this.dispatchEvent(
+      new CustomEvent("table-delete-row-action", {
+        detail: { value: employeeId },
+        bubbles: true,
+        composed: true,
+      })
+    );
+  }
+  handleEditEmployeeClick(employeeId) {
+    this.dispatchEvent(
+      new CustomEvent("table-edit-row-action", {
+        detail: { value: employeeId },
+        bubbles: true,
+        composed: true,
+      })
+    );
+  }
+
   render() {
     return html`
       <div class="tableContainer">
@@ -99,6 +125,7 @@ class TableElement extends LitElement {
                   ></checkbox-element>
                 </th>
                 ${this.columns.map((col) => html`<th>${col.label}</th>`)}
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -112,6 +139,18 @@ class TableElement extends LitElement {
                       ></checkbox-element>
                     </td>
                     ${this.columns.map((col) => html`<td>${item[col.key]}</td>`)}
+                    <td>
+                      <iconify-icon
+                        class="actionIcon"
+                        icon="tabler:edit"
+                        @click=${() => this.handleEditEmployeeClick(item.id)}
+                      ></iconify-icon>
+                      <iconify-icon
+                        class="actionIcon"
+                        icon="majesticons:delete-bin"
+                        @click=${() => this.handleDeleteEmployeeClick(item.id)}
+                      ></iconify-icon>
+                    </td>
                   </tr>
                 `
               )}

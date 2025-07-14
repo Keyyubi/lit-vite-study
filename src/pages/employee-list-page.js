@@ -4,6 +4,7 @@ import { store } from "../store";
 import { sharedStyles } from "../components/shared-styles";
 import "../components/table-element";
 import "../components/employee-card";
+import { Router } from "@vaadin/router";
 
 class EmployeeListPage extends LitElement {
   static styles = [
@@ -60,18 +61,39 @@ class EmployeeListPage extends LitElement {
     this.currentPageTitle = storeState.common.currentPageTitle;
     this.employees = storeState.employee.employees;
     this.columns = storeState.employee.tableColumns;
-    this.mode = "card";
+    this.mode = "table";
+  }
+
+  handleEditClick(event) {
+    Router.go(`/edit-employee/${event.detail.value}`);
+  }
+
+  handleDeleteClick(event) {
+    console.log(event.detail.value);
   }
 
   render() {
     const tableView = html`
       <div class="card">
-        <table-element .data="${this.employees}" .columns="${this.columns}"></table-element>
+        <table-element
+          .data="${this.employees}"
+          .columns="${this.columns}"
+          @table-delete-row-action=${this.handleDeleteClick}
+          @table-edit-row-action=${this.handleEditClick}
+        ></table-element>
       </div>
     `;
 
     const cardView = html`<div class="employee-card-container">
-      ${this.employees.map((item) => html`<employee-card class="employee-card" .employee=${item}></employee-card>`)}
+      ${this.employees.map(
+        (item) =>
+          html`<employee-card
+            class="employee-card"
+            .employee=${item}
+            @employee-card-delete-click=${this.handleDeleteClick}
+            @employee-card-edit-click=${this.handleEditClick}
+          ></employee-card>`
+      )}
     </div>`;
 
     return html`
