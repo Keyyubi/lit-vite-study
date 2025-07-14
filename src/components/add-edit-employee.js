@@ -107,6 +107,8 @@ class AddEditEmployee extends LitElement {
   performSave() {
     this.isDialogOpen = false;
 
+    this.employee.id = store.getState().employee.employees.length + 1;
+
     store.dispatch(addEmployee(this.employee));
 
     this.informationMessage = [html`<p>Employee added successfully! You are being redirected to homepage</p>`];

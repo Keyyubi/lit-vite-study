@@ -35,23 +35,6 @@ class ConfirmationModal extends LitElement {
         margin-block: 0.125rem !important;
       }
 
-      .closeButton {
-        cursor: pointer;
-        display: flex;
-        border: none;
-        border-radius: 0.5rem;
-        background-color: var(--color-white);
-        padding: 0.25rem;
-        font-size: 2rem;
-        font-weight: 500;
-        color: var(--color-primary);
-        transition: background-color 0.2s ease;
-      }
-
-      .closeButton:hover {
-        background-color: var(--color-main-bg);
-      }
-
       .modalContent,
       .modalFooter,
       .dialogButtonRow {
@@ -126,7 +109,7 @@ class ConfirmationModal extends LitElement {
         <div class="modalContainer">
           <div class="row modalHeader">
             <h2>${this.headerTitle}</h2>
-            <iconify-icon class="closeButton" icon="mdi:close" @click=${this.handleCloseClick}></iconify-icon>
+            <iconify-icon class="iconButton" icon="mdi:close" @click=${this.handleCloseClick}></iconify-icon>
           </div>
           <div class="modalContent">
             <slot></slot>

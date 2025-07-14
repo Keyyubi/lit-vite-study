@@ -37,19 +37,28 @@ export const sharedStyles = css`
     box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
   }
 
-  .icon {
-    font-size: 1rem;
-    color: var(--color-primary);
+  .flex {
+    display: flex !important;
   }
 
-  .icon.passive {
+  .iconButton {
+    cursor: pointer;
+    display: flex;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.25rem;
+    font-size: 2rem;
+    font-weight: 500;
+    color: var(--color-primary);
+    transition: background-color 0.2s ease;
+  }
+
+  .iconButton.passive {
     color: var(--color-primary-light);
   }
 
   iconify-icon {
     display: inline-block;
-    width: 1em;
-    height: 1em;
     color: var(--color-primary);
   }
 
@@ -59,7 +68,7 @@ export const sharedStyles = css`
       padding: 0.5rem 0;
     }
 
-    .hide-on-mobile {
+    .hideOnMobile {
       display: none !important;
     }
   }

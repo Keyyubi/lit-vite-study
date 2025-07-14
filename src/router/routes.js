@@ -1,4 +1,4 @@
-import "../pages/eployee-list-page";
+import "../pages/employee-list-page";
 import "../pages/add-employee-page";
 import "../pages/edit-employee-page";
 import "../pages/not-found-page";
