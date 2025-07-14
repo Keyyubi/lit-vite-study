@@ -1,10 +1,7 @@
-import { MIN_YEAR } from "../constants/constants";
-import { getDestructedDate } from "./helper";
+import { MIN_YEAR, PHONE_CODE, PHONE_LENGTH_WITHOUT_CODE } from "../constants/constants";
 
-export const isValidEmail = (email) => {
-  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-  return regex.test(email);
+const getUnmaskedString = (text) => {
+  return text.replace(/[+()/]/g, "").replaceAll(" ", "");
 };
 
 /**
@@ -12,7 +9,6 @@ export const isValidEmail = (email) => {
  * @param {string} date
  * @returns {object}
  */
-
 const getDestructedDate = (date) => {
   if (!date) return null;
 
@@ -31,6 +27,17 @@ const getDestructedDate = (date) => {
 };
 
 /**
+ * This function checks whether given text is a valid email address or not
+ * @param {string} date
+ * @returns {boolean}
+ */
+export const isValidEmail = (email) => {
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  return regex.test(email);
+};
+
+/**
  * The `dateString` parameter should be in the same format with DATE_FORMAT constant
  * @param {string} dateString
  * @returns {boolean}
@@ -43,7 +50,16 @@ export const isValidDate = (dateString) => {
   if (!date) return false;
   if (date.day < 1 || date.day > 32) return false;
   if (date.month < 1 || date.month > 12) return false;
-  if (date.year < MIN_YEAR || date.year > currentYear) return false;
+  if (date.year < MIN_YEAR || date.year > date.currentYear) return false;
+
+  return true;
+};
+
+export const isValidPhone = (phoneString) => {
+  if (!phoneString) return false;
+
+  const unmasked = getUnmaskedString(phoneString);
+  if (unmasked.length !== PHONE_LENGTH_WITHOUT_CODE) return false;
 
   return true;
 };

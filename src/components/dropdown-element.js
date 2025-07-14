@@ -27,12 +27,20 @@ class DropdownElement extends LitElement {
       cursor: pointer;
     }
 
+    .dropdownContainer .dropdownButton.hasError {
+      border-color: red;
+    }
+
     .dropdownContainer .dropdownButton .placeholder {
       opacity: 0.55;
     }
 
     .dropdownContainer .dropdownItemsContainer {
-      max-width: 100%;
+      position: absolute;
+      background-color: var(--color-white);
+      top: 4.5rem;
+      width: 100%;
+      z-index: 10;
       box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.2);
     }
 
@@ -74,6 +82,7 @@ class DropdownElement extends LitElement {
        * Represents whether the dropdown items container opened
        */
       isOpen: { type: Boolean },
+      hasError: { type: Boolean },
     };
   }
 
@@ -85,12 +94,15 @@ class DropdownElement extends LitElement {
     this.options = [];
     this.selected = { code: "", name: "" };
     this.isOpen = false;
+    this.hasError = false;
   }
 
   selectItem(item) {
     this.selected = item;
     this.isOpen = false;
-    this.dispatchEvent(new CustomEvent("dropdown-item-selected"), { details: { item }, bubbles: true, composed: true });
+    this.dispatchEvent(
+      new CustomEvent("dropdown-item-selected", { detail: { value: item.name }, bubbles: true, composed: true })
+    );
   }
 
   render() {
@@ -101,7 +113,10 @@ class DropdownElement extends LitElement {
     return html`
       <div class="dropdownContainer">
         <label for=${this.name}>${this.label}</label>
-        <div class="dropdownButton" @click=${() => (this.isOpen = !this.isOpen)}>
+        <div
+          class=${"dropdownButton".concat(this.hasError ? " hasError" : "")}
+          @click=${() => (this.isOpen = !this.isOpen)}
+        >
           <span class=${this.selected.name ? "" : "placeholder"}>${this.selected.name || this.placeholder}</span>
         </div>
         <div class="dropdownItemsContainer" ?hidden=${!this.isOpen}>

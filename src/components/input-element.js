@@ -69,11 +69,6 @@ class InputElement extends LitElement {
     }
   }
 
-  disconnectedCallback() {
-    super.disconnectedCallback();
-    this.iMask.destroy();
-  }
-
   handleKeyDown(event) {
     if (!this.numberOnly) return;
 
@@ -86,11 +81,12 @@ class InputElement extends LitElement {
   }
 
   handleInputChange(event) {
-    if (this.numberOnly && isNaN(event.key)) return;
+    const value = event.target.value;
+    if (this.numberOnly && isNaN(value.replace(/[^a-zA-Z0-9]/g, ""))) return;
 
     this.dispatchEvent(
       new CustomEvent("input-changed", {
-        detail: { value: event.target.value },
+        detail: { value },
         bubbles: true,
         composed: true,
       })
@@ -102,7 +98,7 @@ class InputElement extends LitElement {
       <div class="inputContainer">
         <label for=${this.name}>${this.label}</label>
         <input
-          class=${this.hasError && "error"}
+          class=${this.hasError && "hasError"}
           name=${this.name}
           type="text"
           .value=${this.value}

@@ -27,16 +27,16 @@ class CheckboxElement extends LitElement {
       position: absolute;
       top: 0;
       left: 0;
-      height: 1.375rem;
-      width: 1.375rem;
+      height: 1.25rem;
+      width: 1.25rem;
       background-color: var(--color-white);
-      border: 1px solid var(--color-border);
-      border-radius: 0.25rem;
+      border: 2px solid #aaa;
+      border-radius: 0.5rem;
     }
 
     .checkbox input:checked ~ .checkmark {
       background-color: var(--color-primary);
-      border: none;
+      border-color: var(--color-primary);
     }
 
     .checkmark::after {
@@ -50,10 +50,10 @@ class CheckboxElement extends LitElement {
     }
 
     .checkbox .checkmark:after {
-      left: 0.5rem;
-      top: 0.25rem;
-      width: 0.25rem;
-      height: 0.5rem;
+      left: 7px;
+      top: 3px;
+      width: 4px;
+      height: 8px;
       border: solid var(--color-white);
       border-width: 0 3px 3px 0;
       -webkit-transform: rotate(45deg);
