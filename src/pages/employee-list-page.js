@@ -93,7 +93,7 @@ class EmployeeListPage extends LitElement {
     this.columns = storeState.employee.tableColumns;
     this.mode = "table";
     this.currentPage = 1;
-    this.itemsCount = storeState.common.itemsPerPage;
+    this.itemsCount = storeState.common.itemsPerPage || 5;
     this.targetEmployeeId = "";
     this.isDeleteModalOpen = false;
     this.resultMessage = "";
