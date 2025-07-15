@@ -1,5 +1,7 @@
 import { html, css, LitElement } from "lit";
 import "../components/checkbox-element";
+import { t } from "../localization/translations";
+import { convertDateToLoad } from "../utils/helper";
 
 class TableElement extends LitElement {
   static styles = css`
@@ -47,6 +49,8 @@ class TableElement extends LitElement {
       color: var(--color-primary);
       margin-inline-end: 0.25rem;
       font-size: 1.25rem;
+      width: 18px;
+      height: 18px;
     }
   `;
 
@@ -128,7 +132,7 @@ class TableElement extends LitElement {
                     @checkbox-change=${this.onToggleSelectAll}
                   ></checkbox-element>
                 </th>
-                ${this.columns.map((col) => html`<th>${col.label}</th>`)}
+                ${this.columns.map((col) => html`<th>${t(`Employee.Label.${col.label}`)}</th>`)}
                 <th>Actions</th>
               </tr>
             </thead>
@@ -142,7 +146,14 @@ class TableElement extends LitElement {
                         @checkbox-change=${() => this.selectEmployee(item.id)}
                       ></checkbox-element>
                     </td>
-                    ${this.columns.map((col) => html`<td>${item[col.key]}</td>`)}
+                    ${this.columns.map(
+                      (col) =>
+                        html`<td>
+                          ${col.key === "dateOfBirth" || col.key === "dateOfEmployment"
+                            ? convertDateToLoad(item[col.key])
+                            : item[col.key]}
+                        </td>`
+                    )}
                     <td>
                       <iconify-icon
                         class="actionIcon"

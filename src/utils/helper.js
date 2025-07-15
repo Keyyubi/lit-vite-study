@@ -1,7 +1,7 @@
 import { isValidDate, isValidEmail, isValidPhone } from "./validators";
 
 /**
- * This function will convert the date string formt from DATE_FORMAT to `YYYY-MM-DD` format;
+ * This function will convert the date string formt from `DD/MM/YYYY` to `YYYY-MM-DD` format;
  * @param {string} dateString
  * @returns {string | null}
  */
@@ -13,6 +13,17 @@ export const convertDateToSave = (dateString) => {
   }
 
   return null;
+};
+
+/**
+ * This function will convert the date string formt from `YYYY-MM-DD` to `DD/MM/YYYY` format;
+ * @param {string} dateString
+ * @returns {string | null}
+ */
+export const convertDateToLoad = (dateString) => {
+  const [year, month, day] = dateString.split("-");
+
+  return `${day}/${month}/${year}`;
 };
 
 /**
@@ -38,43 +49,43 @@ export const validateEmployeeInformation = (employee) => {
 
   if (result.errorFields.length > 0) {
     result.isValid = false;
-    result.errorMessages.push("Please fill all required fields properly.");
+    result.errorMessages.push("Validation.FillRequiredFields");
   }
 
   if (!isValidDate(employee.dateOfBirth)) {
     result.isValid = false;
     result.errorFields.push("dateOfBirth");
-    result.errorMessages.push("Plase enter a valid birth date");
+    result.errorMessages.push("Validation.NotValidBirthDate");
   }
 
   if (!isValidDate(employee.dateOfEmployment)) {
     result.isValid = false;
     result.errorFields.push("dateOfEmployment");
-    result.errorMessages.push("Plase enter a valid employment date");
+    result.errorMessages.push("Validation.NotValidEmploymentDate");
   }
 
   if (!isValidEmail(employee.email)) {
     result.isValid = false;
     result.errorFields.push("email");
-    result.errorMessages.push("Plase enter a valid email address");
+    result.errorMessages.push("Validation.NotValidEmail");
   }
 
   if (!isValidPhone(employee.phone)) {
     result.isValid = false;
     result.errorFields.push("phone");
-    result.errorMessages.push("Plase enter a valid phone number");
+    result.errorMessages.push("Validation.NotValidPhone");
   }
 
   if (!employee.department) {
     result.isValid = false;
     result.errorFields.push("department");
-    result.errorMessages.push("Plase select department of the employee");
+    result.errorMessages.push("Validation.SelectDepartment");
   }
 
   if (!employee.position) {
     result.isValid = false;
     result.errorFields.push("position");
-    result.errorMessages.push("Plase select position of the employee");
+    result.errorMessages.push("Validation.SelectPosition");
   }
 
   return result;

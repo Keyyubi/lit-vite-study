@@ -20,6 +20,25 @@ class NotFoundPage extends LitElement {
     }
   `;
 
+  connectedCallback() {
+    super.connectedCallback();
+
+    let lastLang = store.getState().common.lang;
+    this._unsubscribe = store.subscribe(() => {
+      const newLang = store.getState().common.lang;
+
+      if (newLang !== lastLang) {
+        lastLang = newLang;
+        this.requestUpdate();
+      }
+    });
+  }
+
+  disconnectedCallback() {
+    this._unsubscribe?.();
+    super.disconnectedCallback();
+  }
+
   render() {
     return html`
       <h1>Page not found!</h1>

@@ -36,6 +36,25 @@ class AdminPage extends LitElement {
     this.pageItemCount = String(store.getState().common.itemsPerPage ?? 0);
   }
 
+  connectedCallback() {
+    super.connectedCallback();
+
+    let lastLang = store.getState().common.lang;
+    this._unsubscribe = store.subscribe(() => {
+      const newLang = store.getState().common.lang;
+
+      if (newLang !== lastLang) {
+        lastLang = newLang;
+        this.requestUpdate();
+      }
+    });
+  }
+
+  disconnectedCallback() {
+    this._unsubscribe?.();
+    super.disconnectedCallback();
+  }
+
   handleGenerateEmployees() {
     const employees = createMockEmployees();
     store.dispatch(bulkImportEmployees(employees));

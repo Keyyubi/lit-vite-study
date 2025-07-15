@@ -2,6 +2,8 @@ import { css, html, LitElement } from "lit";
 import { sharedStyles } from "./shared-styles";
 import "./button-element";
 import { Router } from "@vaadin/router";
+import { t } from "../localization/translations";
+import { convertDateToLoad } from "../utils/helper";
 
 class EmployeeCard extends LitElement {
   static styles = [
@@ -83,45 +85,45 @@ class EmployeeCard extends LitElement {
       <div class="card">
         <div class="propertyRow">
           <div class="propertyGroup">
-            <label>First Name</label>
+            <label>${t("Employee.Label.Firstname")}</label>
             <p>${this.employee.firstname}</p>
           </div>
           <div class="propertyGroup">
-            <label>Last Name</label>
+            <label>${t("Employee.Label.Surname")}</label>
             <p>${this.employee.surname}</p>
           </div>
         </div>
 
         <div class="propertyRow">
           <div class="propertyGroup">
-            <label>Date of Employment</label>
-            <p>${this.employee.dateOfEmployment}</p>
+            <label>${t("Employee.Label.DateOfEmployment")}</label>
+            <p>${convertDateToLoad(this.employee.dateOfEmployment)}</p>
           </div>
           <div class="propertyGroup">
-            <label>Date of Birth</label>
-            <p>${this.employee.dateOfBirth}</p>
+            <label>${t("Employee.Label.DateOfBirth")}</label>
+            <p>${convertDateToLoad(this.employee.dateOfBirth)}</p>
           </div>
         </div>
 
         <div class="propertyRow">
           <div class="propertyGroup">
-            <label>Phone</label>
+            <label>${t("Employee.Label.Phone")}</label>
             <p>${this.employee.phone}</p>
           </div>
           <div class="propertyGroup">
-            <label>Email</label>
+            <label>${t("Employee.Label.Email")}</label>
             <p>${this.employee.email}</p>
           </div>
         </div>
 
         <div class="propertyRow">
           <div class="propertyGroup">
-            <label>Department</label>
-            <p>${this.employee.department}</p>
+            <label>${t("Employee.Label.Department")}</label>
+            <p>${t(`Department.${this.employee.department.replace(" ", "")}`)}</p>
           </div>
           <div class="propertyGroup">
-            <label>Position</label>
-            <p>${this.employee.position}</p>
+            <label>${t("Employee.Label.Position")}</label>
+            <p>${t(`Position.${this.employee.position.replace(" ", "")}`)}</p>
           </div>
         </div>
 
@@ -129,13 +131,13 @@ class EmployeeCard extends LitElement {
           <button-element secondary @on-button-click=${this.handleEditClick}>
             <div class="actionButton">
               <iconify-icon class="icon" icon="tabler:edit"></iconify-icon>
-              <span>Edit</span>
+              <span>${t("Buttons.Edit")}</span>
             </div>
           </button-element>
           <button-element @on-button-click=${this.handleDeleteClick}>
             <div class="actionButton">
               <iconify-icon class="icon" icon="majesticons:delete-bin"></iconify-icon>
-              <span>Delete</span>
+              <span>${t("Buttons.Delete")}</span>
             </div>
           </button-element>
         </div>

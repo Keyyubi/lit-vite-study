@@ -5,14 +5,15 @@ import { sharedStyles } from "../components/shared-styles";
 import "../components/input-element";
 import "../components/dropdown-element";
 import "../components/add-edit-employee";
+import { t } from "../localization/translations";
 
 class AddEmployeePage extends LitElement {
   static styles = sharedStyles;
 
   static get properties() {
     return {
-      currentPage: { type: String },
-      currentPageTitle: { type: String },
+      currentRoute: { type: String },
+      currentRouteTitle: { type: String },
     };
   }
 
@@ -20,9 +21,28 @@ class AddEmployeePage extends LitElement {
     super();
     const storeState = store.getState();
 
-    this.currentPage = storeState.common.currentPage;
-    this.currentPageTitle = storeState.common.currentPageTitle;
+    this.currentRoute = storeState.common.currentRoute;
+    this.currentRouteTitle = storeState.common.currentRouteTitle;
     this.employee = storeState.employee.defaultEmployee;
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+
+    let lastLang = store.getState().common.lang;
+    this._unsubscribe = store.subscribe(() => {
+      const newLang = store.getState().common.lang;
+
+      if (newLang !== lastLang) {
+        lastLang = newLang;
+        this.requestUpdate();
+      }
+    });
+  }
+
+  disconnectedCallback() {
+    this._unsubscribe?.();
+    super.disconnectedCallback();
   }
 
   onInputChange(event) {
@@ -34,7 +54,7 @@ class AddEmployeePage extends LitElement {
     return html`
       <section class="container">
         <div class="row">
-          <h2>${this.currentPageTitle}</h2>
+          <h2>${t(`Page.${this.currentRoute}.Title`)}</h2>
         </div>
         <add-edit-employee></add-edit-employee>
       </section>

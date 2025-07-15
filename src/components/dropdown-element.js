@@ -1,5 +1,6 @@
 import { css, html, LitElement } from "lit";
 import "../components/input-element";
+import { t } from "../localization/translations";
 
 class DropdownElement extends LitElement {
   static styles = css`
@@ -109,7 +110,7 @@ class DropdownElement extends LitElement {
     const items =
       this.options.length > 0
         ? this.options.map((item) => html`<li @click=${() => this.selectItem(item)}>${item}</li>`)
-        : html`<li class="unselectable">No items</li>`;
+        : html`<li class="unselectable">${t("Dropdown.NoItems")}</li>`;
     return html`
       <div class="dropdownContainer">
         <label for=${this.name}>${this.label}</label>

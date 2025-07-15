@@ -10,6 +10,7 @@ import { sharedStyles } from "./shared-styles";
 import "./dropdown-element";
 import "./input-element";
 import "./confirmation-modal";
+import { t } from "../localization/translations";
 
 class AddEditEmployee extends LitElement {
   static styles = [
@@ -77,6 +78,25 @@ class AddEditEmployee extends LitElement {
     this.mode = "add";
   }
 
+  connectedCallback() {
+    super.connectedCallback();
+
+    let lastLang = store.getState().common.lang;
+    this._unsubscribe = store.subscribe(() => {
+      const newLang = store.getState().common.lang;
+
+      if (newLang !== lastLang) {
+        lastLang = newLang;
+        this.requestUpdate();
+      }
+    });
+  }
+
+  disconnectedCallback() {
+    this._unsubscribe?.();
+    super.disconnectedCallback();
+  }
+
   willUpdate(changedProps) {
     if (changedProps.has("employeeId")) {
       const storeState = store.getState();
@@ -111,7 +131,7 @@ class AddEditEmployee extends LitElement {
         .employee.employees.filter((item) => item.email === this.employee.email || item.phone === this.employee.phone);
 
       if (existingEmployees.length > 0) {
-        this.informationMessage = [html`<p>There is another employee with these email and/or phone number.</p>`];
+        this.informationMessage = [html`<p>${t("Validation.EmployeeAlreadyExist")}</p>`];
         return;
       }
     }
@@ -127,7 +147,7 @@ class AddEditEmployee extends LitElement {
     if (this.mode === "add") store.dispatch(addEmployee(this.employee));
     else store.dispatch(updateEmployee(this.employee));
 
-    this.informationMessage = [html`<p>Employee added successfully! You are being redirected to homepage</p>`];
+    this.informationMessage = [html`<p>${t("Add.Success.Message")}</p>`];
     setTimeout(() => {
       Router.go("/");
     }, 2000);
@@ -140,7 +160,7 @@ class AddEditEmployee extends LitElement {
           @dialog-close-button-click=${() => (this.isDialogOpen = false)}
           @dialog-continue-button-click=${this.performSave}
         >
-          <p>${`Are you sure want to ${this.mode} employee with these information?`}</p>
+          <p>${`${this.mode}.Warning.Message`}</p>
         </confirmation-modal>`
       : nothing;
 
@@ -163,9 +183,9 @@ class AddEditEmployee extends LitElement {
             <input-element
               name="firstname"
               ?hasError=${this.errorFields.includes("firstname")}
-              label="First Name"
+              label=${t("Employee.Label.Firstname")}
               .value=${this.employee.firstname}
-              placeholder="Enter first name"
+              placeholder=${t("Employee.Placeholder.Firstname")}
               @input-changed="${(e) => (this.employee.firstname = e.detail.value)}"
             ></input-element>
           </div>
@@ -173,9 +193,9 @@ class AddEditEmployee extends LitElement {
             <input-element
               name="surname"
               ?hasError=${this.errorFields.includes("surname")}
-              label="Last Name"
+              label=${t("Employee.Label.Surname")}
               .value=${this.employee.surname}
-              placeholder="Enter last name"
+              placeholder=${t("Employee.Placeholder.Surname")}
               @input-changed="${(e) => (this.employee.surname = e.detail.value)}"
             ></input-element>
           </div>
@@ -183,9 +203,9 @@ class AddEditEmployee extends LitElement {
             <input-element
               name="dateOfEmployment"
               ?hasError=${this.errorFields.includes("dateOfEmployment")}
-              label="Date of Empyloyment"
+              label=${t("Employee.Label.DateOfEmployment")}
               .value=${this.employee.dateOfEmployment}
-              placeholder="01/01/2025"
+              placeholder=${t("Employee.Placeholder.DateOfEmployment")}
               maskFormat="00/00/0000"
               ?numberonly=${true}
               @input-changed="${(e) => (this.employee.dateOfEmployment = e.detail.value)}"
@@ -198,9 +218,9 @@ class AddEditEmployee extends LitElement {
             <input-element
               name="dateOfBirth"
               ?hasError=${this.errorFields.includes("dateOfBirth")}
-              label="Date of Birth"
+              label=${t("Employee.Label.DateOfBirth")}
               .value=${this.employee.dateOfBirth}
-              placeholder="01/01/2025"
+              placeholder=${t("Employee.Placeholder.DateOfBirth")}
               maskFormat="00/00/0000"
               ?numberonly=${true}
               @input-changed="${(e) => (this.employee.dateOfBirth = e.detail.value)}"
@@ -210,9 +230,9 @@ class AddEditEmployee extends LitElement {
             <input-element
               name="phone"
               ?hasError=${this.errorFields.includes("phone")}
-              label="Phone"
+              label=${t("Employee.Label.Phone")}
               .value=${this.employee.phone}
-              placeholder="(5xx) xxx xx xx"
+              placeholder=${t("Employee.Placeholder.Phone")}
               maskFormat="(000) 000 00 00"
               ?numberonly=${true}
               @input-changed="${(e) => (this.employee.phone = e.detail.value)}"
@@ -222,9 +242,9 @@ class AddEditEmployee extends LitElement {
             <input-element
               name="email"
               ?hasError=${this.errorFields.includes("email")}
-              label="Email"
+              label=${t("Employee.Label.Email")}
               .value=${this.employee.email}
-              placeholder="username@provider.com"
+              placeholder=${t("Employee.Placeholder.Email")}
               @input-changed="${(e) => (this.employee.email = e.detail.value)}"
             ></input-element>
           </div>
@@ -235,7 +255,8 @@ class AddEditEmployee extends LitElement {
             <dropdown-element
               @dropdown-item-selected=${(e) => (this.employee.department = e.detail.value)}
               name="department"
-              label="Department"
+              label=${t("Employee.Label.Department")}
+              placeholder=${t("Employee.Placeholder.Department")}
               selected=${this.employee.department}
               ?hasError=${this.errorFields.includes("department")}
               .options=${departments}
@@ -245,7 +266,8 @@ class AddEditEmployee extends LitElement {
             <dropdown-element
               @dropdown-item-selected=${(e) => (this.employee.position = e.detail.value)}
               name="position"
-              label="Position"
+              label=${t("Employee.Label.Position")}
+              placeholder=${t("Employee.Placeholder.Position")}
               selected=${this.employee.position}
               ?hasError=${this.errorFields.includes("position")}
               .options=${positions}
@@ -255,11 +277,11 @@ class AddEditEmployee extends LitElement {
 
         <div class="row centeredColumns">
           <div class="col">
-            <button-element fullwidth @on-button-click=${this.handleSaveClick}>Save</button-element>
+            <button-element fullwidth @on-button-click=${this.handleSaveClick}>${t("Buttons.Save")}</button-element>
           </div>
           <div class="col">
             <button-element fullwidth secondary outlined @on-button-click=${this.handleCancelClick}
-              >Cancel</button-element
+              >${t("Buttons.Cancel")}</button-element
             >
           </div>
         </div>

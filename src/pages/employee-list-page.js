@@ -1,11 +1,13 @@
 import { css, html, LitElement, nothing } from "lit";
+import { Router } from "@vaadin/router";
 import { store } from "../store";
+import { removeEmployee } from "../store/employeeSlice/employeeSlice";
 
 import { sharedStyles } from "../components/shared-styles";
 import "../components/table-element";
 import "../components/employee-card";
-import { Router } from "@vaadin/router";
-import { removeEmployee } from "../store/employeeSlice/employeeSlice";
+import "../components/pagination-element";
+import { t } from "../localization/translations";
 
 class EmployeeListPage extends LitElement {
   static styles = [
@@ -38,31 +40,42 @@ class EmployeeListPage extends LitElement {
 
   static get properties() {
     return {
-      currentPage: { type: String },
-      currentPageTitle: { type: String },
+      currentRoute: { type: String },
+      currentRouteTitle: { type: String },
       employees: { type: Array },
+
       /**
        * This represents the columns will be displayed on the table view
        */
       columns: { type: Array },
+
       /**
        * This represents the view mode of the data.
        * It can be "table" or "card"
        */
       mode: { type: String },
+
       /**
        * This represents how many items will be shown on per page
        * Can be changed via `/admin-page` route
        */
       itemsCount: { type: Number },
+
+      /**
+       * This is used to hold current page number for pagination
+       */
+      currentPage: { type: Number },
+
       /**
        * This is used to hold the id of the target employee that will go in to action
        */
       targetEmployeeId: { type: String },
+
       /**
        * This is used to toggle delete confirmation modal
        */
       isDeleteModalOpen: { type: Boolean },
+
       /**
        * This is used to show operation result to the user
        */
@@ -74,15 +87,41 @@ class EmployeeListPage extends LitElement {
     super();
     const storeState = store.getState();
 
-    this.currentPage = storeState.common.currentPage;
-    this.currentPageTitle = storeState.common.currentPageTitle;
+    this.currentRoute = storeState.common.currentRoute;
+    this.currentRouteTitle = storeState.common.currentRouteTitle;
     this.employees = storeState.employee.employees;
     this.columns = storeState.employee.tableColumns;
     this.mode = "table";
+    this.currentPage = 1;
     this.itemsCount = storeState.common.itemsPerPage;
     this.targetEmployeeId = "";
     this.isDeleteModalOpen = false;
     this.resultMessage = "";
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+
+    let lastLang = store.getState().common.lang;
+    this._unsubscribe = store.subscribe(() => {
+      const newLang = store.getState().common.lang;
+
+      if (newLang !== lastLang) {
+        lastLang = newLang;
+        this.requestUpdate();
+      }
+    });
+  }
+
+  disconnectedCallback() {
+    this._unsubscribe?.();
+    super.disconnectedCallback();
+  }
+
+  get paginatedEmployees() {
+    const start = (this.currentPage - 1) * this.itemsCount;
+    const end = start + this.itemsCount;
+    return this.employees.slice(start, end);
   }
 
   handleEditClick(event) {
@@ -104,6 +143,11 @@ class EmployeeListPage extends LitElement {
     this.resultMessage = "Employee removed successfully!";
     this.isDeleteModalOpen = false;
     this.employees = store.getState().employee.employees;
+    this.requestUpdate();
+  }
+
+  handlePageNumberChange(event) {
+    this.currentPage = event.detail.value;
     this.requestUpdate();
   }
 
@@ -136,7 +180,7 @@ class EmployeeListPage extends LitElement {
     const tableView = html`
       <div class="card">
         <table-element
-          .data="${this.employees}"
+          .data="${this.paginatedEmployees}"
           .columns="${this.columns}"
           @table-delete-row-action=${this.openDeleteConfirmation}
           @table-edit-row-action=${this.handleEditClick}
@@ -144,22 +188,24 @@ class EmployeeListPage extends LitElement {
       </div>
     `;
 
-    const cardView = html`<div class="employee-card-container">
-      ${this.employees.map(
-        (item) =>
-          html`<employee-card
-            class="employee-card"
-            .employee=${item}
-            @employee-card-delete-click=${this.openDeleteConfirmation}
-            @employee-card-edit-click=${this.handleEditClick}
-          ></employee-card>`
-      )}
-    </div>`;
+    const cardView = html`
+      <div class="employee-card-container">
+        ${this.paginatedEmployees.map(
+          (item) =>
+            html`<employee-card
+              class="employee-card"
+              .employee=${item}
+              @employee-card-delete-click=${this.openDeleteConfirmation}
+              @employee-card-edit-click=${this.handleEditClick}
+            ></employee-card>`
+        )}
+      </div>
+    `;
 
     return html`
       <section class="container">
         <div class="row header-container">
-          <h2>${this.currentPageTitle}</h2>
+          <h2>${t(`Page.${this.currentRoute}.Title`)}</h2>
           <div class="tabs-container">
             <iconify-icon
               class=${"iconButton".concat(this.mode !== "table" ? " passive" : "")}
@@ -174,7 +220,11 @@ class EmployeeListPage extends LitElement {
           </div>
         </div>
         ${this.mode === "table" ? tableView : cardView}
-        <div class="row">Pagination will be added here</div>
+        <pagination-element
+          .pageCount=${Math.ceil((this.employees.length || 1) / (this.itemsCount || 1))}
+          .currentPage=${this.currentPage}
+          @pagination-page-change=${this.handlePageNumberChange}
+        ></pagination-element>
       </section>
       ${deleteConfirmation} ${resultModal}
     `;
