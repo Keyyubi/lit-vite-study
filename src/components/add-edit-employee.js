@@ -51,7 +51,7 @@ class AddEditEmployee extends LitElement {
       /**
        * This is used to show information messages to user and also to toggle information modal
        */
-      informationMessage: { type: String },
+      informationMessages: { type: Array },
       /**
        * This is used to toggle confirmation dialog
        */
@@ -73,7 +73,7 @@ class AddEditEmployee extends LitElement {
     this.employeeId = "";
     this.errorMessages = [];
     this.errorFields = [];
-    this.informationMessage = "";
+    this.informationMessages = [];
     this.isDialogOpen = false;
     this.mode = "add";
   }
@@ -115,12 +115,13 @@ class AddEditEmployee extends LitElement {
   handleSaveClick() {
     this.errorFields = [];
     this.errorMessages = [];
+    this.informationMessages = [];
 
     const validationResult = validateEmployeeInformation(this.employee);
     if (!validationResult.isValid) {
       this.errorMessages = validationResult.errorMessages;
       this.errorFields = validationResult.errorFields;
-      this.informationMessage = validationResult.errorMessages.map((message) => html`<p>${message}</p>`);
+      this.informationMessages.push(...validationResult.errorMessages);
 
       return;
     }
@@ -131,7 +132,7 @@ class AddEditEmployee extends LitElement {
         .employee.employees.filter((item) => item.email === this.employee.email || item.phone === this.employee.phone);
 
       if (existingEmployees.length > 0) {
-        this.informationMessage = [html`<p>${t("Validation.EmployeeAlreadyExist")}</p>`];
+        this.informationMessages.push("Validation.EmployeeAlreadyExist");
         return;
       }
     }
@@ -147,16 +148,17 @@ class AddEditEmployee extends LitElement {
     if (this.mode === "add") store.dispatch(addEmployee(this.employee));
     else store.dispatch(updateEmployee(this.employee));
 
-    this.informationMessage = [html`<p>${t("Add.Success.Message")}</p>`];
+    this.informationMessages.push("Add.Success.Message");
     setTimeout(() => {
       Router.go("/");
     }, 2000);
   }
 
   render() {
+    const modalMessages = this.informationMessages.map((labelKey) => html`<p>${t(labelKey)}</p>`);
     const dialog = this.isDialogOpen
       ? html`<confirmation-modal
-          headerTitle="Are you sure?"
+          headerTitle=${t("Modal.Question.Title")}
           @dialog-close-button-click=${() => (this.isDialogOpen = false)}
           @dialog-continue-button-click=${this.performSave}
         >
@@ -165,14 +167,14 @@ class AddEditEmployee extends LitElement {
       : nothing;
 
     const information =
-      this.informationMessage.length > 0
+      modalMessages.length > 0
         ? html`<confirmation-modal
-            headerTitle="Information"
+            headerTitle=${t("Modal.Information.Title")}
             mode="info"
-            @dialog-close-button-click=${() => (this.informationMessage = "")}
-            @dialog-continue-button-click=${() => (this.informationMessage = "")}
+            @dialog-close-button-click=${() => (this.informationMessages = [])}
+            @dialog-continue-button-click=${() => (this.informationMessages = [])}
           >
-            ${this.informationMessage}
+            ${modalMessages}
           </confirmation-modal>`
         : nothing;
 

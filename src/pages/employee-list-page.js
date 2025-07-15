@@ -102,7 +102,16 @@ class EmployeeListPage extends LitElement {
   connectedCallback() {
     super.connectedCallback();
 
+    let lastLang = store.getState().common.lang;
     this._unsubscribe = store.subscribe(() => {
+      const newLang = store.getState().common.lang;
+
+      if (newLang !== lastLang) {
+        lastLang = newLang;
+        this.requestUpdate();
+      }
+
+      this.employees = state.employee.employees;
       this.requestUpdate();
     });
   }
@@ -146,6 +155,8 @@ class EmployeeListPage extends LitElement {
   }
 
   render() {
+    console.log("Employees:", this.employees);
+    console.log("Paginated Employees:", this.paginatedEmployees);
     const deleteConfirmation = this.isDeleteModalOpen
       ? html`
           <confirmation-modal
