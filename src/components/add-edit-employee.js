@@ -4,7 +4,7 @@ import { store } from "../store";
 import { addEmployee, updateEmployee } from "../store/employeeSlice/employeeSlice";
 import { departments } from "../assets/mock/departments.json";
 import { positions } from "../assets/mock/positions.json";
-import { validateEmployeeInformation } from "../utils/helper";
+import { convertDateToSave, validateEmployeeInformation } from "../utils/helper";
 import { sharedStyles } from "./shared-styles";
 
 import "./dropdown-element";
@@ -144,6 +144,8 @@ class AddEditEmployee extends LitElement {
     this.isDialogOpen = false;
 
     this.mode === "add" && (this.employee.id = store.getState().employee.employees.length + 1);
+    this.employee.dateOfBirth = convertDateToSave(this.employee.dateOfBirth);
+    this.employee.dateOfEmployment = convertDateToSave(this.employee.dateOfEmployment);
 
     if (this.mode === "add") store.dispatch(addEmployee(this.employee));
     else store.dispatch(updateEmployee(this.employee));
