@@ -1,0 +1,49 @@
+{
+  "employees": [
+    {
+      "id": 123456789,
+      "firstname": "John",
+      "surname": "Doe",
+      "position": "Junior",
+      "department": "Tech",
+      "email": "johndoe@test.com",
+      "phone": "555 555 55 55",
+      "dateOfEmployment": "2023-01-15",
+      "dateOfBirth": "1990-05-20"
+    }
+  ],
+  "orderedTableColumns": [
+    {
+      "key": "firstname",
+      "label": "Firstname"
+    },
+    {
+      "key": "surname",
+      "label": "Surname"
+    },
+    {
+      "key": "dateOfEmployment",
+      "label": "DateOfEmployment"
+    },
+    {
+      "key": "dateOfBirth",
+      "label": "DateOfBirth"
+    },
+    {
+      "key": "email",
+      "label": "Email"
+    },
+    {
+      "key": "phone",
+      "label": "Phone"
+    },
+    {
+      "key": "department",
+      "label": "Department"
+    },
+    {
+      "key": "position",
+      "label": "Position"
+    }
+  ]
+}

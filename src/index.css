@@ -1,11 +1,13 @@
 :root {
   --color-primary: #ff6101;
   --color-primary-light: #ffb080;
-  --color-secondary: #6c757d;
+  --color-secondary: #093673;
   --color-white: #fff;
   --color-main-bg: #f8f8f8;
   --color-font: #333;
-  --color-border: #ccc;
+  --color-font-muted: #9e9e9e;
+  --color-border: #eee;
+  --color-modal-overlay: rgba(255, 255, 255, 0.7);
 
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
