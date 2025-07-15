@@ -99,9 +99,9 @@ class DropdownElement extends LitElement {
     super();
     this.name = "";
     this.label = "";
-    this.placeholder = "Please select";
+    this.placeholder = "";
     this.options = [];
-    this.selected = { code: "", name: "" };
+    this.selected = "";
     this.isOpen = false;
     this.hasError = false;
   }

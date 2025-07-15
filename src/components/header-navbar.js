@@ -108,10 +108,6 @@ class HeaderNavbar extends LitElement {
   }
 
   render() {
-    // const langItem =
-    //   this.currentLang === "en"
-    //     ? html`<iconify-icon icon="circle-flags:lang-en" @click=${this.handleLangChange}></iconify-icon>`
-    //     : html``;
     return html`
       <header>
         <div class="logo-container" @click=${this.handleLogoClick}>

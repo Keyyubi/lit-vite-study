@@ -95,7 +95,7 @@ class PaginationElement extends LitElement {
 
   getPageNumbers() {
     const pages = [this.renderPageItem(1)];
-    const totalCount = isFinite(this.pageCount) ? 1 : this.pageCount;
+    const totalCount = this.pageCount ?? 1;
     const current = this.currentPage;
     const visiblePageNumbers = 5;
     const surroundingCount = 2;
