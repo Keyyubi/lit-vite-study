@@ -9,6 +9,14 @@ class DropdownElement extends LitElement {
       position: relative;
     }
 
+    .dropdownContainer iconify-icon {
+      position: absolute;
+      top: 2rem;
+      inset-inline-end: 0.5rem;
+      font-size: 2rem;
+      color: var(--color-font);
+    }
+
     .dropdownContainer label {
       margin-inline-start: 0.25rem;
     }
@@ -111,6 +119,7 @@ class DropdownElement extends LitElement {
       this.options.length > 0
         ? this.options.map((item) => html`<li @click=${() => this.selectItem(item)}>${item}</li>`)
         : html`<li class="unselectable">${t("Dropdown.NoItems")}</li>`;
+
     return html`
       <div class="dropdownContainer">
         <label for=${this.name}>${this.label}</label>
@@ -119,6 +128,7 @@ class DropdownElement extends LitElement {
           @click=${() => (this.isOpen = !this.isOpen)}
         >
           <span class=${this.selected ? "" : "placeholder"}>${this.selected || this.placeholder}</span>
+          <iconify-icon icon="mdi:caret-down"></iconify-icon>
         </div>
         <div class="dropdownItemsContainer" ?hidden=${!this.isOpen}>
           <ul>

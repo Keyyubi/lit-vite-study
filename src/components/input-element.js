@@ -7,6 +7,7 @@ class InputElement extends LitElement {
       display: flex;
       flex-direction: column;
       gap: 0.25rem;
+      position: relative;
     }
 
     .inputContainer label {
@@ -29,6 +30,13 @@ class InputElement extends LitElement {
 
     .inputContainer input.hasError {
       border-color: red;
+    }
+
+    ::slotted([slot="icon"]) {
+      position: absolute;
+      top: 2.25rem;
+      inset-inline-end: 0.5rem;
+      font-size: 1.5rem;
     }
   `;
 
@@ -109,6 +117,7 @@ class InputElement extends LitElement {
           @input=${this.handleInputChange}
           @keydown=${this.handleKeyDown}
         />
+        <slot class="icon" name="icon"></slot>
       </div>
     `;
   }

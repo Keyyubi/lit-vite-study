@@ -209,7 +209,9 @@ class AddEditEmployee extends LitElement {
               maskFormat="00/00/0000"
               ?numberonly=${true}
               @input-changed="${(e) => (this.employee.dateOfEmployment = e.detail.value)}"
-            ></input-element>
+            >
+              <iconify-icon slot="icon" icon="mdi:calendar"></iconify-icon>
+            </input-element>
           </div>
         </div>
 
@@ -224,7 +226,9 @@ class AddEditEmployee extends LitElement {
               maskFormat="00/00/0000"
               ?numberonly=${true}
               @input-changed="${(e) => (this.employee.dateOfBirth = e.detail.value)}"
-            ></input-element>
+            >
+              <iconify-icon slot="icon" icon="mdi:calendar"></iconify-icon>
+            </input-element>
           </div>
           <div class="col">
             <input-element
