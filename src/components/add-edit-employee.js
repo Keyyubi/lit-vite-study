@@ -164,7 +164,7 @@ class AddEditEmployee extends LitElement {
           @dialog-close-button-click=${() => (this.isDialogOpen = false)}
           @dialog-continue-button-click=${this.performSave}
         >
-          <p>${`${this.mode}.Warning.Message`}</p>
+          <p>${`${this.mode === "add" ? "Add" : "Edit"}.Warning.Message`}</p>
         </confirmation-modal>`
       : nothing;
 
