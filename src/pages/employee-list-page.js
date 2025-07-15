@@ -102,14 +102,8 @@ class EmployeeListPage extends LitElement {
   connectedCallback() {
     super.connectedCallback();
 
-    let lastLang = store.getState().common.lang;
     this._unsubscribe = store.subscribe(() => {
-      const newLang = store.getState().common.lang;
-
-      if (newLang !== lastLang) {
-        lastLang = newLang;
-        this.requestUpdate();
-      }
+      this.requestUpdate();
     });
   }
 
