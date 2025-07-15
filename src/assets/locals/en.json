@@ -55,5 +55,7 @@
   "Add.Success.Message": "Employee added successfully! You are being redirected to homepage",
   "Add.Warning.Message": "Are you sure want to add employee with these information?",
   "Edit.Success.Message": "Employee updated successfully! You are being redirected to homepage",
-  "Edit.Warning.Message": "Are you sure want to update employee with these information?"
+  "Edit.Warning.Message": "Are you sure want to update employee with these information?",
+  "Delete.Warning.Message": "Are you sure want to delete this employee? This operation cannot be undone!",
+  "Delete.Success.Message": "Employee removed successfully!"
 }

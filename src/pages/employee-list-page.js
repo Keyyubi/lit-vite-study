@@ -143,7 +143,7 @@ class EmployeeListPage extends LitElement {
 
   performDelete() {
     store.dispatch(removeEmployee({ id: this.targetEmployeeId }));
-    this.resultMessage = "Employee removed successfully!";
+    this.resultMessage = t("Delete.Success.Message");
     this.isDeleteModalOpen = false;
     this.employees = store.getState().employee.employees;
     this.requestUpdate();
@@ -155,16 +155,14 @@ class EmployeeListPage extends LitElement {
   }
 
   render() {
-    console.log("Employees:", this.employees);
-    console.log("Paginated Employees:", this.paginatedEmployees);
     const deleteConfirmation = this.isDeleteModalOpen
       ? html`
           <confirmation-modal
-            headerTitle="Are you sure?"
+            headerTitle=${t("Modal.Question.Title")}
             @dialog-close-button-click=${this.closeDeleteConfirmation}
             @dialog-continue-button-click=${this.performDelete}
           >
-            <p>Are you sure want to delete this employee? This operation cannot be undone!</p>
+            <p>${t("Delete.Warning.Message")}</p>
           </confirmation-modal>
         `
       : nothing;
@@ -172,7 +170,7 @@ class EmployeeListPage extends LitElement {
     const resultModal = this.resultMessage
       ? html`
           <confirmation-modal
-            headerTitle="Operation Result"
+            headerTitle=${t("Modal.Information.Title")}
             mode="info"
             @dialog-close-button-click=${() => (this.resultMessage = "")}
             @dialog-continue-button-click=${() => (this.resultMessage = "")}
