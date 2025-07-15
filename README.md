@@ -2,15 +2,9 @@
 
 ## Overview
 
+##### IMPORTANT: **_Please go to `/admin-page` route manually and generate some employees initially_**
+
 This project is a web application built with LitElement that manages employee data. It features employee listing, editing, adding, and deletion capabilities with support for pagination, different view modes (table and card), and internationalization.
-
-## NPM commands
-
-- `npm install`
-- `npm run dev`
-- `npm run test`
-- `npm run test:coverage`
-- `npm run build`
 
 ## Features
 
@@ -22,13 +16,22 @@ This project is a web application built with LitElement that manages employee da
 - Localization support with dynamic language updates
 - Admin page for managing settings like items per page and data generation (ADDITIONAL)
 
-## Technologies Used
+## NPM commands
+
+- `npm install`
+- `npm run dev`
+- `npm run test`
+- `npm run test:coverage`
+- `npm run build`
+
+## Technologies and Libraries Used
 
 - [LitElement](https://lit.dev/) for building web components
 - [Vaadin Router](https://vaadin.com/router) for client-side routing
 - Redux-style store for state management
 - Custom elements for UI components (buttons, modals, tables, cards, pagination)
 - Localization via a simple translation utility
+- [Iconify](https://iconify.design/) for icons
 
 ## Project Structure
 
